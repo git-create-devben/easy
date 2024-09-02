@@ -6,7 +6,7 @@ import Image from 'next/image';
 const ChatTemplate = () => {
     return (
         <div className='flex  lg:h-[55rem] gap-2 w-full '>
-            <Separator orientation='vertical' className='h-full text-white bg-white' />
+            {/* <Separator orientation='vertical' className='h-full text-white bg-white' />
             <div className='flex flex-col justify-between w-full'>
                 <div className='flex flex-col overflow-y-auto'>
                     <div className='flex items-start mb-4'>
@@ -63,7 +63,7 @@ const ChatTemplate = () => {
                         <SendHorizontalIcon className="w-5 h-5 text-neutral-400" />
                     </div>
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }

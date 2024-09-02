@@ -4,7 +4,7 @@ import React from 'react'
 const CanvaTemplate = () => {
     return (
         <div className='text-white'>
-            <h2>Collecting visual assest ............</h2>
+            {/* <h2>Collecting visual assest ............</h2>
             <div className='flex flex-col gap-4 mt-5 mx-10 '>
                 <div className='flex gap-4'>
                     <IceCream className="w-5 h-5 text-neutral-400" />
@@ -22,7 +22,7 @@ const CanvaTemplate = () => {
                 </div>
                
                 
-            </div>
+            </div> */}
 
         </div>
     )
