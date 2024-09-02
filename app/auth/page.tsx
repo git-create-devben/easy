@@ -45,8 +45,8 @@ export default function Login() {
             src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202024-08-09%20085317-QO5IplA9G7IKAAoZ93IkGveev0eHao.png"
             alt="Easy AI Chat Interface"
             className="rounded-md w-full"
-            width={100}
-            height={100}
+            width={500}
+            height={500}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent" />
 

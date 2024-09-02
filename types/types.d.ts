@@ -60,7 +60,8 @@ export interface YouTubeVideoId {
   }
   interface Message {
     type: 'user' | 'ai';
-    content: string;
+    content: string ;
+    sending?:bolean
   }
 
   interface WindowType{

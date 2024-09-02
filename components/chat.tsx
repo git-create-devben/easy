@@ -25,7 +25,7 @@ const ChatComponent: React.FC<ChatProps> = ({ input, handleSubmit, setInput, mes
         <div className='flex flex-col justify-between w-full'>
           <div className='flex flex-col overflow-y-auto items-start' ref={responseRef}>
             {messages.map((message, index) => (
-              <div key={index} className='flex items-start mb-8 w-full'>
+              <div key={index} className='mt-4 flex items-start mb-8 w-full'>
                 <div className='flex flex-col h-12 items-center gap-2'>
                   <div className={`rounded-full ${message.type === 'user' ? 'bg-neutral-400 text-neutral-100' : 'bg-none'} p-1 w-10 capitalize text-center`}>
                     {message.type === 'user' ? `${user?.name?.split(' ').map(n => n[0]).join('')}` : <Bot className="h-8 w-8 text-neutral-700 scale-1"/>}
