@@ -1,38 +1,76 @@
-// convex/gemini.ts
-import { action } from "./_generated/server";
 import { v } from "convex/values";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { action, query } from "./_generated/server";
+import {
+  GoogleGenerativeAI,
+  GenerativeModel,
+  ChatSession,
+} from "@google/generative-ai";
+import { getAuthUserId } from "@convex-dev/auth/server";
+const apiKey = process.env.GEMINI_API_KEY as string;
 
-export default action({
+const genAI = new GoogleGenerativeAI(apiKey);
+
+const generationConfig = {
+  temperature: 1,
+  topP: 0.95,
+  topK: 64,
+  maxOutputTokens: 8192,
+  responseMimeType: "text/plain" as const,
+};
+
+// Mock game database
+const gameDatabase = [
+  { name: "Ludo", url: "https://ludoking.com" },
+  { name: "Chess", url: "https://www.chess.com/embed" },
+  { name: "Tic Tac Toe", url: "https://playtictactoe.org" },
+  { name: "Sudoku", url: "https://sudoku.com" },
+  { name: "2048", url: "https://play2048.co" },
+  { name: "Pac-Man", url: "https://scratch.mit.edu/projects/68831387/embed" },
+  { name: "Minesweeper", url: "https://minesweeperonline.com" },
+  { name: "Snake", url: "https://playsnake.org" },
+  { name: "Checkers", url: "https://www.mathsisfun.com/games/checkers.html" },
+  { name: "Tetris", url: "https://tetris.com/play-tetris" },
+  { name: "Flappy Bird", url: "https://flappybird.io" },
+  {
+    name: "Connect Four",
+    url: "https://www.mathsisfun.com/games/connect4.html",
+  },
+  { name: "Solitaire", url: "https://www.solitr.com" },
+  { name: "Pong", url: "https://pong-2.com" },
+];
+
+export const getAIResponse = action({
   args: { input: v.string() },
-  handler: async (ctx, { input }) => {
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      throw new Error("GEMINI_API_KEY is not set in the environment variables");
-    }
-
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({
+  handler: async (
+    ctx,
+    args: { input: string }
+  ): Promise<{ text: string; gameUrl: string | null }> => {
+    const identity = await ctx.auth.getUserIdentity();
+    const userName = identity?.name; // Get user's name here
+    const model: GenerativeModel = genAI.getGenerativeModel({
       model: "gemini-1.5-pro",
-      systemInstruction: "You're Easy AI learning assistance you're to provider user with a breif explanation of what they ask and explain to them very well and go straight to the point , and also a video or assest will follow your response to explain to them in a visual way \n\nexample of question\nmath related question assest will follow if the question is not complicated else video will be render along your response to explain better\nuser: please what is 2 + 2?\nEasy: Alex 2 + 2 is 4, think about 2 Ice scream + 2 Ice scream, how many will it be? ofcourse it'll be 4 Ice screams and that is it 2 + 2 will give you 4. Do you understand? if you don't understand it's fine not to understand things at first.\n\nexample question 2 others question like science etc\nuser: what is photosynthesis?\nEasy: Haha 😂  I see you're interested in science that makes sense I'll explain photosynthesis to you as new born baby cause we make everything easy for you! then your explanation\n\nyour slogans \nWe make everything easy for you\nwe simplify learning for you.\n\nAnd youre develop by devben.\n\n",
+      systemInstruction: `Yo, you're Easy AI, the ultimate game hookup by devben! When ${userName} asks to play a game, you find it and embed it, quick style. If they don't mention a game, just rep Easy AI as their go-to for all things gaming. If they do ask, keep it hype and short—like, "Ludo? Say less, it's lit!" then throw in something fun like "Your game’s all set, check the content box. Happy gaming!"`,
     });
+    
+    const chatSession: ChatSession = model.startChat({ generationConfig });
 
-    const generationConfig = {
-      temperature: 1,
-      topP: 0.95,
-      topK: 64,
-      maxOutputTokens: 8192,
-    };
+    try {
+      const result = await chatSession.sendMessage(args.input);
+      const text = result.response.text();
 
-    const chat = model.startChat({
-      generationConfig,
-      history: [],
-    });
+      // Simple game recommendation logic
+      const lowerInput = args.input.toLowerCase();
+      const recommendedGame = gameDatabase.find((game) =>
+        lowerInput.includes(game.name.toLowerCase())
+      );
 
-    const result = await chat.sendMessage(input);
-    const response = await result.response;
-    const text = response.text();
-
-    return text;
+      return {
+        text,
+        gameUrl: recommendedGame ? recommendedGame.url : null,
+      };
+    } catch (error) {
+      console.error("Error generating AI response:", error);
+      throw new Error("Failed to generate AI response");
+    }
   },
 });
