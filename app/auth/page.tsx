@@ -3,6 +3,7 @@
 import { Button } from "$/components/ui/button"
 import { BrainCircuit, ArrowRight } from "lucide-react"
 import LoginForm from '$/components/(auth)/LoginForm'
+import Image from "next/image"
 
 export default function Login() {
 
@@ -40,10 +41,12 @@ export default function Login() {
         </div>
 
         <div className="w-full max-w-4xl bg-gray-900 p-6 rounded-lg shadow-2xl mb-12 relative overflow-hidden">
-          <img
+          <Image
             src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202024-08-09%20085317-QO5IplA9G7IKAAoZ93IkGveev0eHao.png"
             alt="Easy AI Chat Interface"
             className="rounded-md w-full"
+            width={100}
+            height={100}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent" />
 
