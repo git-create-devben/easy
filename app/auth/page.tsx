@@ -47,6 +47,7 @@ export default function Login() {
             className="rounded-md w-full"
             width={500}
             height={500}
+            priority
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent" />
 

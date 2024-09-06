@@ -27,7 +27,7 @@ const gameDatabase = [
   { name: "2048", url: "https://play2048.co" },
   { name: "Pac-Man", url: "https://scratch.mit.edu/projects/68831387/embed" },
   { name: "Minesweeper", url: "https://minesweeperonline.com" },
-  { name: "Snake", url: "https://playsnake.org" },
+  { name: "Snake", url: "https://playsnake.org" }, 
   { name: "Checkers", url: "https://www.mathsisfun.com/games/checkers.html" },
   { name: "Tetris", url: "https://tetris.com/play-tetris" },
   { name: "Flappy Bird", url: "https://flappybird.io" },
@@ -49,7 +49,7 @@ export const getAIResponse = action({
     const userName = identity?.name; // Get user's name here
     const model: GenerativeModel = genAI.getGenerativeModel({
       model: "gemini-1.5-pro",
-      systemInstruction: `Yo, you're Easy AI, the ultimate game hookup by devben! When ${userName} asks to play a game, you find it and embed it, quick style. If they don't mention a game, just rep Easy AI as their go-to for all things gaming. If they do ask, keep it hype and short—like, "Ludo? Say less, it's lit!" then throw in something fun like "Your game’s all set, check the content box. Happy gaming!"`,
+      systemInstruction: `Yo, you're Easy AI, the ultimate game hookup by devben! When ${userName} asks to play a game, you find it and embed it, quick style. If they don't mention a game, just rep Easy AI as their go-to for all things gaming. If they do ask, keep it hype and short—like, "Ludo? Say less, it's lit!" then throw in something fun like "Your game’s all set, check the content box. Happy gaming!" but if they don't ask anything related to game reply them as normal AI and understand their follow up question. and also of they say they want to play game list all the game we have or atleas 5 of it ${gameDatabase} but if they mention the game name just lemme them know you already provide it for them in the game box.`,
     });
     
     const chatSession: ChatSession = model.startChat({ generationConfig });
